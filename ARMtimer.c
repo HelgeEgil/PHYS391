@@ -17,8 +17,9 @@ void delayMicrosecondsWiringPi(unsigned long howLong) {
 
    gettimeofday(&tNow, NULL);
    tLong.tv_sec  = howLong / 1000000;
-   tLong.tv_usec = howLong & 1000000;
+   tLong.tv_usec = howLong % 1000000;
 
+   // so that &tNow != &tEnd?
    timeradd(&tNow, &tLong, &tEnd);
 
    while (timercmp(&tNow, &tEnd, <))
@@ -33,8 +34,8 @@ void delayMicrosecondsNanosleep(unsigned long howLong) {
 }
 
 int main(int argc, char *argv[]) {
-   long long int t, prev, *timer; // 64 bit timer
-   int fd;
+   long long int t, d, prev, *timer; // 64 bit timer
+   int fd, i;
    void *st_base; // byte ptr to simplify offset math
 
 
@@ -56,15 +57,13 @@ int main(int argc, char *argv[]) {
    printf("Sleeping using nanosleep method: \n");
 
    prev = *timer;
-   int i;
-   long long int d;
    delayMicrosecondsNanosleep(0);
    for (i=0; i<10; i++) {
+      d = 20 * i;
       t = *timer;
-      d = 10 * i;
       printf("Sleeping for %lld us: Actual time %lld     \n", d, t - prev);
       prev = t;
-      delayMicrosecondsNanosleep(10*i);
+      delayMicrosecondsNanosleep(d);
    }
 
    printf("Sleeping using gettimeofday method: \n");
@@ -72,11 +71,11 @@ int main(int argc, char *argv[]) {
    prev = *timer;
    delayMicrosecondsWiringPi(0);
    for (i=0; i<10; i++) {
+      d = 20 * i;
       t = *timer;
-      d = 10 *i;
       printf("Sleeping for %lld us: Actual time: %lld      \n", d, t-prev);
       prev = t;
-      delayMicrosecondsWiringPi(10*i);
+      delayMicrosecondsWiringPi(d);
    }
 
    return 0;
