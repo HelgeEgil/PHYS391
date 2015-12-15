@@ -1,12 +1,12 @@
 # Makefile for Beginning Linux Programming 3rd Edition
 # Chapter 11
 
-TIMER=piglow
+PROGRAM=hrmglow
 
 CFLAGS=-Wall -lm -g -lcurses -lwiringPi -lwiringPiDev
 LDFLAGS=-g
 
-ALL= $(TIMER)
+ALL= $(PROGRAM)
 
 all: $(ALL)
 

@@ -1,0 +1,13 @@
+void activateAll();
+void deactivateAll();
+void checkFIFO();
+void sig_abort(int sig_number);
+void pulseAllLEDs(int speed);
+void pulseHR();
+int getHR();
+unsigned int getOneHR();
+void loopHRM();
+void shine();
+float gauss(float x, float mu, float sigma);
+void read_data();
+void run_python();
